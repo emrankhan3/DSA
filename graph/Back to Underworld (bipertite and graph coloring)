@@ -1,0 +1,71 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool vis[100000];
+vector<int>v[100000];
+int cost=-9,node=-1;
+int col[100000];
+void dfs(int n,int c,set<int>&vec)
+{
+    if(vis[n])return;
+    vec.insert(n);
+    vis[n]=1;
+    col[n]=c;
+    if(c==1){
+        c=2;
+    }
+    else c=1;
+    for(int i:v[n]){
+        dfs(i,c,vec);
+    }
+}
+
+void kick(int cASE){
+    int n;
+    cin >>n;
+    set<int>st;
+    for(int i=0; i<= 20000;i++){
+        col[i]=0;
+        v[i].clear();
+        vis[i]=0;
+    }
+
+    for (int i=1; i<=n; i++ )
+    {
+        int x,y;
+        cin >> x >> y;
+        st.insert(x);
+        st.insert(y);
+        v[y].push_back(x);
+        v[x].push_back(y);
+    }
+    int ans = 0;
+    for(int i:st){
+        set<int>k;
+        if(!vis[i]){
+
+            dfs(i,1,k);
+            int bl,cl;
+            bl=cl=0;
+            for(int i:k){
+                if(col[i]==1)bl++;
+                if(col[i]==2)cl++;
+            }
+            ans+=max(bl,cl);
+
+
+        }
+    }
+
+    cout<<"Case "<<cASE<<": "<<ans<<endl;
+}
+
+int main()
+{
+    int t;
+    cin >> t;
+    for (int i=1; i<=t; i++ )
+    {
+        kick(i);
+    }
+}
